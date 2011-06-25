@@ -16,6 +16,7 @@ void comment(void);
 
 %%
 "/*"			{ comment(); }
+"#"[^\n]*		{ /* consume preprocessor */ }
 "//"[^\n]*              { /* consume //-comment */ }
 
 

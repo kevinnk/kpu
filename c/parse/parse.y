@@ -1,3 +1,15 @@
+%error-verbose
+%{
+#include <stdio.h>
+
+extern char yytext[];
+extern int column;
+
+int yylex( void );
+void yyerror( char const * );
+
+
+%}
 %token IDENTIFIER CONSTANT STRING_LITERAL SIZEOF
 %token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
 %token AND_OP OR_OP MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN
@@ -386,6 +398,7 @@ statement
 	| selection_statement
 	| iteration_statement
 	| jump_statement
+	| error
 	;
 
 labeled_statement
