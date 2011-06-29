@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-extern unsigned int debug_level;
-
 enum log_level {
 	LOG_LVL_DBG = 0,
 	LOG_LVL_INFO = 1,
@@ -12,26 +10,37 @@ enum log_level {
 	LOG_LVL_ERROR = 3
 };
 
-void log_printf(enum log_level level, const char *file, unsigned line, 
-	const char *function, const char *format, ...);
+static char *log_strings[4] =
+{
+	"Debug: ",
+	"Info : ",
+	"Warn : ",  /* want a space after each colon, all same width, colons aligned */
+	"Info : ",
+};
 
-char* alloc_vprintf(const char *fmt, va_list ap);
+static inline void log_printf( enum log_level log_level, char* expr ) {
+	fprintf(stdin, "%s%s\n", log_strings[log_level], expr );
+	fflush(stdin);
+	return;
+}
 
-#define LOG_DEBUG(expr ...) \
-	do { \
-		if (debug_level <= LOG_LVL_DBG) \
-			log_printf(LOG_LVL_DBG, \
-				__FILE__, __LINE__, __func__, \
-				expr); \
-	} while (0)	
+static inline void LOG_DEBUG(char* expr) {
+	log_printf(LOG_LVL_DBG, expr);
+	return;
+}
 
-#define LOG_INFO(expr ...) \
-	log_printf (LOG_LVL_INFO, __FILE__, __LINE__, __FUNCTION__, expr)
+static inline void LOG_INFO(char* expr) {
+	log_printf(LOG_LVL_INFO, expr);
+	return;
+}
 
-#define LOG_WARN(expr ...) \
-	log_printf (LOG_LVL_WARN, __FILE__, __LINE__, __FUNCTION__, expr)
+static inline void LOG_WARN(char* expr) {
+	log_printf(LOG_LVL_WARN, expr);
+	return;
+}
 
-#define LOG_ERROR(expr ...) \
-	log_printf (LOG_LVL_ERROR, __FILE__, __LINE__, __FUNCTION__, expr)
-
+static inline void LOG_ERROR(char* expr) {
+	log_printf(LOG_LVL_ERROR, expr);
+	return;
+}
 

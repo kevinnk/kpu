@@ -16,7 +16,7 @@ void yyerror( char const * );
 %token SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN
 %token XOR_ASSIGN OR_ASSIGN TYPE_NAME
 
-%token TYPEDEF EXTERN STATIC AUTO REGISTER INLINE RESTRICT
+%token TYPEDEF EXTERN STATIC AUTO REGISTER INLINE RESTRICT PURE
 %token CHAR SHORT INT LONG SIGNED UNSIGNED FLOAT DOUBLE CONST VOLATILE VOID
 %token BOOL COMPLEX IMAGINARY
 %token STRUCT UNION ENUM ELLIPSIS
@@ -281,6 +281,7 @@ type_qualifier
 
 function_specifier
 	: INLINE
+	| PURE
 	;
 
 declarator
@@ -398,7 +399,6 @@ statement
 	| selection_statement
 	| iteration_statement
 	| jump_statement
-	| error
 	;
 
 labeled_statement

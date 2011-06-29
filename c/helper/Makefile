@@ -11,4 +11,4 @@ OBJS	=	$(SRC_C:.c=.o) $(SRC_Y:.y=.o) $(SRC_L:.l=.o)
 all: $(OBJS)
 	mv *.o $(PREFIX)/obj/.
 clean:
-	rm $(OBJS)
+	rm -f $(OBJS)

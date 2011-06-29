@@ -1,3 +1,4 @@
+%option nounput
 D			[0-9]
 L			[a-zA-Z_]
 H			[a-fA-F0-9]
@@ -9,9 +10,11 @@ IS                      ((u|U)|(u|U)?(l|L|ll|LL)|(l|L|ll|LL)(u|U))
 %{
 #include <stdio.h>
 #include "parse.tab.h"
+#include "log.h"
 
 void count(void);
 void comment(void);
+int check_type(void);
 %}
 
 %%
@@ -20,7 +23,7 @@ void comment(void);
 "//"[^\n]*              { /* consume //-comment */ }
 
 
-"auto"			{ count(); return(AUTO); }
+"auto"			{ count(); LOG_WARN("auto!!!"); return(AUTO); }
 "bool"			{ count(); return(BOOL); }
 "break"			{ count(); return(BREAK); }
 "case"			{ count(); return(CASE); }
@@ -42,6 +45,7 @@ void comment(void);
 "inline"		{ count(); return(INLINE); }
 "int"			{ count(); return(INT); }
 "long"			{ count(); return(LONG); }
+"pure"			{ count(); return(PURE); }
 "register"		{ count(); return(REGISTER); }
 "restrict"		{ count(); return(RESTRICT); }
 "return"		{ count(); return(RETURN); }
@@ -143,7 +147,7 @@ void comment(void)
 			return;
 		prev = c;
 	}
-	error("unterminated comment");
+	LOG_ERROR("unterminated comment");
 }
 
 
@@ -165,8 +169,7 @@ void count(void)
 }
 
 
-int check_type(void)
-{
+int check_type(void) {
 /*
 * pseudo code --- this is what it should check
 *
